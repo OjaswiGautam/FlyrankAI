@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Discovering Content Performance Archetypes in Large-Scale Search Data — Ojaswi Gautam">
+<title>Content Performance Archetypes — Ojaswi Gautam</title>
+<style>
+:root{
+  --ink:#14202b; --muted:#607080; --paper:#fbfcfe; --card:#ffffff;
+  --line:#dfe6ed; --accent:#245b86; --accent2:#163e5c; --soft:#edf4f8;
+  --warn:#fff5dc; --max:1180px; --shadow:0 10px 30px rgba(20,32,43,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.72 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+.container{max-width:var(--max);margin:auto;padding:0 24px}
+header{background:linear-gradient(135deg,#102c42 0%,#245b86 100%);color:#fff;padding:72px 0 58px}
+.kicker{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;opacity:.78;font-weight:700}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.45rem,6vw,4.6rem);line-height:1.03;max-width:980px;margin:16px 0 20px;font-weight:600}
+.deck{font-size:1.16rem;max-width:850px;color:#e5eef5}
+.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.pill{border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.09);padding:7px 11px;border-radius:999px;font-size:.84rem}
+nav{position:sticky;top:0;z-index:10;background:rgba(251,252,254,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.navin{display:flex;gap:18px;overflow:auto;padding:12px 24px;max-width:var(--max);margin:auto}
+.navin a{white-space:nowrap;font-size:.85rem;font-weight:650;color:#425365}
+main{padding:48px 0 80px}
+.grid{display:grid;grid-template-columns:1fr 310px;gap:42px}
+article{min-width:0}
+aside{position:sticky;top:72px;align-self:start}
+.toc{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+.toc strong{display:block;margin-bottom:8px}
+.toc a{display:block;padding:5px 0;font-size:.88rem}
+section{scroll-margin-top:76px;margin:0 0 58px}
+h2{font-family:Georgia,"Times New Roman",serif;font-size:2rem;line-height:1.2;margin:0 0 18px;color:var(--accent2)}
+h3{font-size:1.08rem;margin:26px 0 10px}
+.lead{font-size:1.08rem;color:#3f5060}
+.abstract{background:#fff;border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:12px;padding:26px 28px;box-shadow:var(--shadow)}
+.question{background:var(--soft);border-radius:14px;padding:22px 24px;margin:24px 0;font-family:Georgia,"Times New Roman",serif;font-size:1.25rem}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;box-shadow:0 4px 15px rgba(20,32,43,.04)}
+.metric{font-size:1.8rem;font-weight:800;color:var(--accent2);line-height:1.1}
+.label{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-top:7px}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+table{border-collapse:collapse;width:100%;min-width:650px}
+th{background:var(--accent2);color:#fff;text-align:left;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}
+th,td{padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+tr:nth-child(even) td{background:#f7f9fb}
+.callout{border:1px solid #e1d4a8;background:var(--warn);padding:18px 20px;border-radius:12px}
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:24px 0}
+.step{background:#fff;border:1px solid var(--line);border-radius:12px;padding:15px;position:relative}
+.step b{display:block;color:var(--accent2);margin-bottom:4px}
+.bar-chart{display:grid;gap:11px;margin:20px 0}
+.bar-row{display:grid;grid-template-columns:190px 1fr 65px;gap:10px;align-items:center;font-size:.9rem}
+.bar{height:15px;background:#dce8f0;border-radius:999px;overflow:hidden}
+.fill{height:100%;background:var(--accent);border-radius:999px}
+.fill.dim{background:#7b95a8}.fill.dark{background:var(--accent2)}
+.small{font-size:.86rem;color:var(--muted)}
+.recs{display:grid;gap:12px}
+.rec{display:grid;grid-template-columns:48px 1fr;gap:16px;background:#fff;border:1px solid var(--line);border-radius:13px;padding:18px;box-shadow:0 3px 12px rgba(20,32,43,.04)}
+.rank{font-size:1.35rem;font-weight:800;color:var(--accent)}
+blockquote{margin:22px 0;padding:17px 20px;border-left:4px solid var(--accent);background:#f5f8fa}
+code{background:#eef2f5;padding:2px 5px;border-radius:5px;font-size:.9em}
+pre{background:#12212e;color:#eef5fa;padding:18px;border-radius:12px;overflow:auto}
+footer{border-top:1px solid var(--line);padding:35px 0 55px;color:var(--muted);font-size:.9rem}
+@media(max-width:900px){.grid{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,1fr)}aside{display:none}.flow{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.container{padding:0 17px}.cards{grid-template-columns:1fr}.flow{grid-template-columns:1fr}.bar-row{grid-template-columns:125px 1fr 52px;font-size:.78rem}header{padding:48px 0 42px}main{padding-top:32px}}
+</style>
+</head>
+<body>
+<header>
+<div class="container">
+<div class="kicker">FlyRankAI ML Engineering Internship · Research Artifact</div>
+<h1>Discovering Content Performance Archetypes in Large-Scale Search Data</h1>
+<p class="deck">An unsupervised partitioning and decision-support framework for turning observable search-performance and structural signals into interpretable content archetypes.</p>
+<div class="meta">
+<span class="pill">Ojaswi Gautam</span>
+<span class="pill">K-Means · k = 4</span>
+<span class="pill">176,738 content items</span>
+<span class="pill">47 clients</span>
+<span class="pill">March 2026 partition</span>
+</div>
+</div>
+</header>
+
+<nav><div class="navin">
+<a href="#abstract">Abstract</a><a href="#introduction">Problem</a><a href="#data">Data</a><a href="#methodology">Methodology</a>
+<a href="#results">Results</a><a href="#recommendations">Recommendations</a><a href="#monitoring">Monitoring</a><a href="#limitations">Limitations</a>
+<a href="#reproducibility">Reproducibility</a><a href="#references">References</a>
+</div></nav>
+
+<main><div class="container grid">
+<article>
+<section id="abstract">
+<h2>Abstract</h2>
+<div class="abstract">
+<p>Triage and optimization across enterprise content inventories are frequently constrained by coarse, binary performance classifications that obscure multi-signal behavioral dynamics. We investigate what recurring performance archetypes exist across a large-scale content inventory using observable search-performance and structural metadata. We evaluate an unsupervised K-Means clustering architecture (<strong>k=4</strong>) trained across a continuous, log-transformed feature space under a strictly isolated client-grouped split (<strong>N=176,738</strong> content items across 47 clients) to prevent institutional leakage. The model achieves a held-out validation Silhouette Score of <strong>0.3568</strong> and a Davies–Bouldin Index of <strong>0.9087</strong>, partitioning the inventory into four structurally stable archetypes, including high-traffic performers, emerging low-visibility content, and two subsets heavily defined by tracking missingness. Finally, we map these empirical clusters to a rule-based CTR-fix baseline (<strong>61,267</strong> prioritized URLs) to produce a calibrated, confidence-tagged action playbook for human-in-the-loop review.</p>
+</div>
+</section>
+
+<section id="introduction">
+<h2>1. Introduction &amp; Problem Statement</h2>
+<p>Enterprise search engine optimization (SEO) and editorial workflows frequently manage catalogs spanning hundreds of thousands of published URLs. In production environments, identifying content requiring intervention typically relies on rigid, binary thresholding, such as labeling URLs simply as “declining” versus “stable.” This supervised framing forces premature assumptions about what constitutes content success. It can conflate structurally distinct dynamics: an exploratory article recently indexed by search engines may exhibit low clicks for fundamentally different reasons than a mature, long-form guide suffering from click-through-rate (CTR) decay.</p>
+<div class="question"><strong>Core research question:</strong><br>“What recurring performance archetypes exist across the content inventory, based on observable search and engagement signals?”</div>
+<p>The research develops an unsupervised, metric-based partitioning framework to group content into interpretable behavioral archetypes. Rather than predicting future traffic or diagnosing causal ranking mechanisms, the system operates as an operational lens for content triaging.</p>
+<h3>Decision &amp; Error Cost Framework</h3>
+<div class="table-wrap"><table>
+<tr><th>Decision</th><th>Failure mode &amp; review cost</th></tr>
+<tr><td>Triage large catalogs into broad strategies — Protect, Improve, Rewrite, Merge, Prune, Monitor — before individual review.</td><td>Misallocated audit hours and reviewer fatigue caused by noisy or mislabeled cluster assignments, such as classifying struggling pages as champions.</td></tr>
+</table></div>
+<h3>Epistemic Boundaries</h3>
+<ul>
+<li><strong>Structured, not semantic:</strong> numerical search-performance aggregates, page structural dimensions, and temporal metadata only; no natural-language text, embeddings, or semantic parsing.</li>
+<li><strong>Analytical groupings, not true classes:</strong> clusters are geometric partitions within a continuous feature space, not fundamental organic states.</li>
+<li><strong>Association, not causation:</strong> archetypes reflect joint observational patterns in historical search data and do not establish causal relationships or guarantee ranking improvements.</li>
+</ul>
+</section>
+
+<section id="data">
+<h2>2. Data Contract &amp; Preprocessing</h2>
+<p>The underlying data infrastructure derives from the FlyRank warehouse, combining daily search-performance telemetry with static catalog dimensions. The source partition <code>fact_content_daily_performance</code> (<code>month=2026-03</code>) contains <strong>9,841,378</strong> raw daily records spanning 31 calendar days with zero duplicate groups. Filtering for Google Search Console (GSC) availability yields a final modeling universe of <strong>176,738 unique content items across 47 clients</strong>, representing 34.01% of the 519,606 total catalog inventory.</p>
+<div class="cards">
+<div class="card"><div class="metric">9.84M</div><div class="label">Raw daily records</div></div>
+<div class="card"><div class="metric">31/31</div><div class="label">Calendar days</div></div>
+<div class="card"><div class="metric">176,738</div><div class="label">Modeling items</div></div>
+<div class="card"><div class="metric">47</div><div class="label">Clients</div></div>
+</div>
+<div class="callout"><strong>Public-safe boundary:</strong> the artifact reports aggregate and hashed identifiers only. Client names, private URLs, private queries, and other identifying production details are intentionally excluded from the public presentation.</div>
+<h3>Field Inventory &amp; Allocation</h3>
+<div class="table-wrap"><table>
+<tr><th>Field</th><th>Pipeline role</th><th>Selection / exclusion justification</th></tr>
+<tr><td><code>client_hash_id</code></td><td>Split key / grain</td><td>Preserved for client-grouped holdout splits.</td></tr>
+<tr><td><code>content_hash_id</code></td><td>Unit identifier</td><td>Primary entity grain (1:1 content item).</td></tr>
+<tr><td><code>report_date</code></td><td>Fact grain</td><td>Collapsed via aggregation over March 2026.</td></tr>
+<tr><td><code>gsc_impressions</code></td><td>Modeling feature</td><td>Aggregated sum; log-transformed via log(1 + x).</td></tr>
+<tr><td><code>gsc_avg_position</code></td><td>Modeling feature</td><td>Impression-weighted average across active days.</td></tr>
+<tr><td><code>gsc_clicks</code></td><td>Modeling feature</td><td>Aggregated sum; log-transformed via log(1 + x).</td></tr>
+<tr><td><code>content_age_days</code></td><td>Modeling feature</td><td>Date difference versus 2026-03-31; range 0–494 days.</td></tr>
+<tr><td><code>word_count</code></td><td>Modeling feature</td><td>31.30% nulls median-imputed with an indicator flag.</td></tr>
+<tr><td><code>avg_position_missing_or_zero</code></td><td>Missingness indicator</td><td>Flag for 0.81% zero/untracked rank values.</td></tr>
+<tr><td><code>word_count_missing</code></td><td>Missingness indicator</td><td>Explicit flag preserving 31.30% null signal.</td></tr>
+<tr><td><code>health_score</code>, <code>priority_score</code></td><td>Forbidden / excluded</td><td>Circular product decision outputs.</td></tr>
+<tr><td><code>action_type</code>, <code>recommendation</code></td><td>Forbidden / excluded</td><td>Downstream workflow decisions.</td></tr>
+<tr><td><code>ga4_engaged_sessions</code></td><td>Diagnostic only</td><td>Severe sparsity: 4.21% availability; 3.7% joint overlap.</td></tr>
+<tr><td><code>optimization_eligible_date</code></td><td>Excluded</td><td>91.26% null; workflow artifact.</td></tr>
+</table></div>
+</section>
+
+<section id="methodology">
+<h2>3. Methodology</h2>
+<p>Content belonging to a single client shares common CMS templates, site architecture, editorial styles, and domain tracking quirks. A naive random row split allows these client-specific attributes to appear in both partitions, artificially rewarding the model for memorizing domain-specific house styles. To evaluate genuine generalization across unseen client catalogs, the study uses <code>GroupShuffleSplit</code> grouped by <code>client_hash_id</code>, with 75% training and 25% validation.</p>
+<div class="flow">
+<div class="step"><b>01 · Aggregate</b>Collapse daily telemetry to content-item grain.</div>
+<div class="step"><b>02 · Isolate</b>75/25 client-grouped split with zero overlap.</div>
+<div class="step"><b>03 · Normalize</b>Fit StandardScaler on train; apply to train and validation.</div>
+<div class="step"><b>04 · Partition</b>K-Means sweep across k=3…8 with n_init=30.</div>
+<div class="step"><b>05 · Validate</b>Silhouette, Davies–Bouldin and multi-seed ARI.</div>
+</div>
+<div class="cards">
+<div class="card"><div class="metric">133,474</div><div class="label">Train rows · 35 clients</div></div>
+<div class="card"><div class="metric">43,264</div><div class="label">Validation rows · 12 clients</div></div>
+<div class="card"><div class="metric">0</div><div class="label">Client overlap</div></div>
+<div class="card"><div class="metric">30</div><div class="label">K-Means initializations</div></div>
+</div>
+<h3>Baseline Heuristic</h3>
+<p>To benchmark cluster actionability against a transparent heuristic, a rule-based CTR-fix prioritization model is implemented on active pages (<strong>N=101,441</strong>) with at least 100 impressions and position &gt; 0. An item is flagged with <code>TITLE_META_CTR_FIX</code> when observed CTR falls at least 30% below its position-tier benchmark.</p>
+<div class="table-wrap"><table>
+<tr><th>Position tier</th><th>Rank band</th><th>Eligible URLs</th><th>Pooled expected CTR</th></tr>
+<tr><td>Tier 1</td><td>Position ≤ 3.0</td><td>10,194</td><td>0.3867%</td></tr>
+<tr><td>Tier 2</td><td>3.0 &lt; Position ≤ 10</td><td>47,811</td><td>0.3240%</td></tr>
+<tr><td>Tier 3</td><td>10 &lt; Position ≤ 20</td><td>19,547</td><td>0.3160%</td></tr>
+<tr><td>Tier 4</td><td>Position &gt; 20.0</td><td>23,889</td><td>0.1360%</td></tr>
+</table></div>
+</section>
+
+<section id="results">
+<h2>4. Experimental Results &amp; Validation</h2>
+<p>Hyperparameter sweeps across k=3…8 on the client-grouped validation split demonstrate optimal separation at <strong>k=4</strong>. The selected model reaches a validation Silhouette Score of <strong>0.3568</strong> and Davies–Bouldin Index of <strong>0.9087</strong>. Stability across five seeds is exceptionally high, with a mean Adjusted Rand Index (ARI) of <strong>0.9981</strong>.</p>
+<div class="cards">
+<div class="card"><div class="metric">0.3568</div><div class="label">Validation silhouette</div></div>
+<div class="card"><div class="metric">0.9087</div><div class="label">Davies–Bouldin index</div></div>
+<div class="card"><div class="metric">0.9981</div><div class="label">Mean ARI · 5 seeds</div></div>
+<div class="card"><div class="metric">k = 4</div><div class="label">Selected partition</div></div>
+</div>
+<h3>Validation Cluster Selection Sweep</h3>
+<div class="table-wrap"><table>
+<tr><th>k</th><th>Validation Silhouette</th><th>Validation Davies–Bouldin</th><th>Minimum validation cluster share</th></tr>
+<tr><td>3</td><td>0.3485</td><td>1.1340</td><td>0.2649</td></tr>
+<tr><td><strong>4 ★</strong></td><td><strong>0.3568</strong></td><td><strong>0.9087</strong></td><td>0.0054</td></tr>
+<tr><td>5</td><td>0.3416</td><td>1.1002</td><td>0.0054</td></tr>
+<tr><td>6</td><td>0.3395</td><td>0.9820</td><td>0.0054</td></tr>
+<tr><td>7</td><td>0.3314</td><td>1.0163</td><td>0.0044</td></tr>
+<tr><td>8</td><td>0.3270</td><td>0.9931</td><td>0.0044</td></tr>
+</table></div>
+<h3>Split Methodology Comparison</h3>
+<div class="table-wrap"><table>
+<tr><th>Split methodology</th><th>Train rows</th><th>Validation rows</th><th>Client overlap</th><th>Validation silhouette</th></tr>
+<tr><td>Naive random row split (25% holdout)</td><td>132,553</td><td>44,185</td><td>45 / 47 clients</td><td>0.2962</td></tr>
+<tr><td><strong>Honest client-grouped (75 / 25)</strong></td><td><strong>133,474</strong></td><td><strong>43,264</strong></td><td><strong>0 clients</strong></td><td><strong>0.3568</strong></td></tr>
+</table></div>
+<h3>Discovered Archetype Empirical Profiles</h3>
+<div class="table-wrap"><table>
+<tr><th>ID</th><th>Archetype interpretation</th><th>Rows</th><th>Share</th><th>Median impressions</th><th>Median clicks</th><th>Baseline lift</th></tr>
+<tr><td>0</td><td>Missing / Imputed Metadata</td><td>52,572</td><td>29.75%</td><td>96.0</td><td>0.0</td><td>1.110</td></tr>
+<tr><td>1</td><td>Core Established Content</td><td>48,766</td><td>27.59%</td><td>2,533.0</td><td>6.0</td><td>1.196</td></tr>
+<tr><td>2</td><td>Low-Traffic / Emerging</td><td>73,966</td><td>41.85%</td><td>38.0</td><td>0.0</td><td>0.811</td></tr>
+<tr><td>3</td><td>Sparse / No-Rank Risk</td><td>1,434</td><td>0.81%</td><td>1.0</td><td>0.0</td><td>0.000</td></tr>
+</table></div>
+<h3>Baseline Flag Lift by Archetype</h3>
+<div class="bar-chart">
+<div class="bar-row"><span>Core Established Content</span><div class="bar"><div class="fill dark" style="width:100%"></div></div><strong>1.196×</strong></div>
+<div class="bar-row"><span>Missing / Imputed</span><div class="bar"><div class="fill" style="width:93%"></div></div><strong>1.110×</strong></div>
+<div class="bar-row"><span>Global baseline</span><div class="bar"><div class="fill dim" style="width:84%"></div></div><strong>1.000×</strong></div>
+<div class="bar-row"><span>Low-Traffic / Emerging</span><div class="bar"><div class="fill dim" style="width:68%"></div></div><strong>0.811×</strong></div>
+<div class="bar-row"><span>Sparse / No-Rank</span><div class="bar"><div class="fill dim" style="width:1%"></div></div><strong>0.000×</strong></div>
+</div>
+<p class="small">Artifact source: <code>work/figures/w07_baseline_lift_by_cluster.png</code>. The chart is a visual rendering of the reported baseline-lift values.</p>
+</section>
+
+<section id="recommendations">
+<h2>5. Ranked Recommendations &amp; Action Playbook</h2>
+<p>To operationalize cluster outputs for content reviewers, the <strong>61,267</strong> baseline CTR-fix candidates are mapped to their behavioral archetype and annotated with algorithmic confidence cautions.</p>
+<div class="recs">
+<div class="rec"><div class="rank">01</div><div><strong>Core Established Content</strong><br>Prioritize high-visibility candidates that exhibit low CTR relative to their position benchmark. Treat these as review candidates, not automatic fixes.</div></div>
+<div class="rec"><div class="rank">02</div><div><strong>Missing / Imputed Metadata</strong><br>Review instrumentation and metadata completeness before interpreting performance. Multiple cautions should lower confidence in direct editorial action.</div></div>
+<div class="rec"><div class="rank">03</div><div><strong>Low-Traffic / Emerging</strong><br>Use the archetype as a context layer rather than a trigger. Its lower baseline lift suggests the CTR-fix heuristic is less concentrated here.</div></div>
+<div class="rec"><div class="rank">04</div><div><strong>Sparse / No-Rank Risk</strong><br>Prioritize data-quality and indexing investigation over CTR optimization; absence of a baseline flag is not evidence of health.</div></div>
+</div>
+<h3>Confidence Tag Distribution · n = 61,267</h3>
+<div class="table-wrap"><table>
+<tr><th>Confidence classification</th><th>Queue count</th><th>Share</th></tr>
+<tr><td>LOW_CLICK_VOLUME_CAUTION (&lt;10 clicks)</td><td>37,802</td><td>61.70%</td></tr>
+<tr><td>MULTIPLE_CAUTIONS</td><td>20,233</td><td>33.02%</td></tr>
+<tr><td>HIGH_CONFIDENCE</td><td>3,231</td><td>5.27%</td></tr>
+<tr><td>DATA_QUALITY_CAUTION</td><td>1</td><td>&lt;0.01%</td></tr>
+</table></div>
+<h3>System Boundaries &amp; Governance</h3>
+<div class="table-wrap"><table>
+<tr><th>Operational risk — what not to do</th><th>Governance mitigation</th></tr>
+<tr><td>Automated publishing based on flags.</td><td>Human review gate mandatory.</td></tr>
+<tr><td>Labeling clusters as “quality scores”.</td><td>Archetypes are descriptive, not grades.</td></tr>
+<tr><td>Auto-scoring unobserved new clients.</td><td>Manual audit required on onboarding.</td></tr>
+<tr><td>Acting on thin (&lt;10) click samples.</td><td>Filtered via click-volume flags.</td></tr>
+<tr><td>Assuming absence of flag means health.</td><td>Cluster 3 structurally yields zero flags.</td></tr>
+</table></div>
+</section>
+
+<section id="monitoring">
+<h2>6. Model Monitoring &amp; Retraining Architecture</h2>
+<p>Because this clustering framework operates without a supervised target label, operational drift should be detected through data and representation drift rather than residual-loss monitoring.</p>
+<div class="table-wrap"><table>
+<tr><th>Monitoring trigger</th><th>Metric specification</th><th>Baseline reference · March 2026</th></tr>
+<tr><td>Feature shift</td><td>Median shift &gt;20% on core inputs</td><td><code>log_imp</code>: 5.16; <code>avg_pos</code>: 8.26</td></tr>
+<tr><td>Cluster shift</td><td>Proportion drift &gt;10% relative</td><td>[29.75%, 27.59%, 41.85%, 0.81%]</td></tr>
+<tr><td>Coverage drift</td><td>GSC / GA4 telemetry rate change</td><td>GSC: 36.69%; GA4: 4.21%</td></tr>
+<tr><td>Tail anomaly</td><td>Cluster 3 share explosion / collapse</td><td>0.81% reference share</td></tr>
+<tr><td>Catalog expansion</td><td>New unverified <code>client_hash_id</code> present</td><td>47 reference clients</td></tr>
+</table></div>
+</section>
+
+<section id="limitations">
+<h2>7. Limitations &amp; Honest Framing</h2>
+<ul>
+<li><strong>Unobserved confounders:</strong> the dataset lacks SERP feature layouts, search intent classification, backlink authority metrics, and competitor dynamics.</li>
+<li><strong>Absence of on-page engagement:</strong> due to extreme GA4 telemetry sparsity (4.21%), clustering reflects search-side visibility rather than consumption duration or post-click engagement.</li>
+<li><strong>Temporal cross-section:</strong> observations are restricted to a single 31-day window (March 2026), omitting multi-month seasonality and lifecycle transitions.</li>
+<li><strong>Missingness-driven partitions:</strong> Cluster 0 and Cluster 3 are substantially defined by tracking absence and imputation, meaning membership sometimes reflects instrumentation gaps rather than genuine editorial characteristics.</li>
+<li><strong>Absence of causal validity:</strong> no experimental intervention was conducted to prove that applying metadata updates to flagged URLs will improve rankings or CTR.</li>
+</ul>
+<blockquote><strong>Interpretation rule:</strong> the clusters are best treated as a decision-support lens for prioritizing human review, not as automated judgments of content quality or guarantees of future performance.</blockquote>
+</section>
+
+<section id="reproducibility">
+<h2>8. Reproducibility &amp; Environment Setup</h2>
+<p>All modeling pipelines, deterministic SQL queries, and artifact exports are version-controlled within the project repository.</p>
+<pre>git clone https://github.com/OjaswiGautam/FlyrankAI.git
+cd FlyrankAI
+pip install -r requirements.txt
+jupyter nbconvert --to notebook --execute work/notebooks/capstone.ipynb</pre>
+<p><a href="https://github.com/OjaswiGautam/FlyrankAI" target="_blank" rel="noopener">Open the project repository ↗</a></p>
+<p class="small">Primary artifact: <code>work/notebooks/capstone.ipynb</code>. Supporting figures are referenced by their repository paths in the paper.</p>
+</section>
+
+<section id="acknowledgments">
+<h2>9. Acknowledgments &amp; Data Credit</h2>
+<p>This research was conducted as part of the FlyRank ML Engineering Internship Capstone track.</p>
+<p><strong>Built on the FlyRank ML Internship dataset.</strong> <a href="https://flyrank.ai" target="_blank" rel="noopener">flyrank.ai ↗</a></p>
+</section>
+
+<section id="references">
+<h2>10. References</h2>
+<ol>
+<li>Arthur, D., &amp; Vassilvitskii, S. (2007). <em>k-means++: The advantages of careful seeding.</em> Proceedings of the eighteenth annual ACM-SIAM symposium on Discrete algorithms, 1027–1035.</li>
+<li>Rousseeuw, P. J. (1987). <em>Silhouettes: A graphical aid to the interpretation and validation of cluster analysis.</em> Journal of Computational and Applied Mathematics, 20, 53–65.</li>
+<li>Davies, D. L., &amp; Bouldin, D. W. (1979). <em>A cluster separation measure.</em> IEEE Transactions on Pattern Analysis and Machine Intelligence, (2), 224–227.</li>
+<li>Google People + AI Research (PAIR). <em>People + AI Guidebook: Designing human-centered AI products.</em></li>
+<li>Mitchell, M., Wu, S., Zaldivar, A., Barnes, P., Vasserman, L., Hutchinson, B., et al. (2019). <em>Model cards for model reporting.</em> Proceedings of the Conference on Fairness, Accountability, and Transparency, 220–229.</li>
+</ol>
+</section>
+</article>
+
+<aside>
+<div class="toc">
+<strong>On this page</strong>
+<a href="#abstract">Abstract</a>
+<a href="#introduction">1. Problem</a>
+<a href="#data">2. Data</a>
+<a href="#methodology">3. Methodology</a>
+<a href="#results">4. Results</a>
+<a href="#recommendations">5. Recommendations</a>
+<a href="#monitoring">6. Monitoring</a>
+<a href="#limitations">7. Limitations</a>
+<a href="#reproducibility">8. Reproducibility</a>
+<a href="#acknowledgments">9. Data Credit</a>
+<a href="#references">10. References</a>
+</div>
+</aside>
+</div></main>
+
+<footer><div class="container">
+<strong>Ojaswi Gautam · FlyRankAI ML Engineering Internship</strong><br>
+Research artifact based on the submitted capstone paper. Public-facing presentation intentionally excludes client names, private URLs, and private search queries.
+</div></footer>
+</body>
+</html>
