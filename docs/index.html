@@ -203,17 +203,17 @@ footer{border-top:1px solid var(--line);padding:35px 0 55px;color:var(--muted);f
 <h3>Discovered Archetype Empirical Profiles</h3>
 <div class="table-wrap"><table>
 <tr><th>ID</th><th>Archetype interpretation</th><th>Rows</th><th>Share</th><th>Median impressions</th><th>Median clicks</th><th>Baseline lift</th></tr>
-<tr><td>0</td><td>Missing / Imputed Metadata</td><td>52,572</td><td>29.75%</td><td>96.0</td><td>0.0</td><td>1.110</td></tr>
-<tr><td>1</td><td>Core Established Content</td><td>48,766</td><td>27.59%</td><td>2,533.0</td><td>6.0</td><td>1.196</td></tr>
-<tr><td>2</td><td>Low-Traffic / Emerging</td><td>73,966</td><td>41.85%</td><td>38.0</td><td>0.0</td><td>0.811</td></tr>
+<tr><td>0</td><td>Missing / Imputed Metadata</td><td>52,572</td><td>29.75%</td><td>96.0</td><td>0.0</td><td><strong>1.296</strong></td></tr>
+<tr><td>1</td><td>Low-Traffic / Emerging</td><td>48,766</td><td>27.59%</td><td>2,533.0</td><td>6.0</td><td><strong>1.275</strong></td></tr>
+<tr><td>2</td><td>Core Established Content</td><td>73,966</td><td>41.85%</td><td>38.0</td><td>0.0</td><td><strong>0.690</strong></td></tr>
 <tr><td>3</td><td>Sparse / No-Rank Risk</td><td>1,434</td><td>0.81%</td><td>1.0</td><td>0.0</td><td>0.000</td></tr>
 </table></div>
 <h3>Baseline Flag Lift by Archetype</h3>
 <div class="bar-chart">
-<div class="bar-row"><span>Core Established Content</span><div class="bar"><div class="fill dark" style="width:100%"></div></div><strong>1.196×</strong></div>
-<div class="bar-row"><span>Missing / Imputed</span><div class="bar"><div class="fill" style="width:93%"></div></div><strong>1.110×</strong></div>
-<div class="bar-row"><span>Global baseline</span><div class="bar"><div class="fill dim" style="width:84%"></div></div><strong>1.000×</strong></div>
-<div class="bar-row"><span>Low-Traffic / Emerging</span><div class="bar"><div class="fill dim" style="width:68%"></div></div><strong>0.811×</strong></div>
+<div class="bar-row"><span>Missing / Imputed</span><div class="bar"><div class="fill dark" style="width:100%"></div></div><strong>1.296×</strong></div>
+<div class="bar-row"><span>Emerging / Low-Traffic</span><div class="bar"><div class="fill" style="width:98.4%"></div></div><strong>1.275×</strong></div>
+<div class="bar-row"><span>Global baseline</span><div class="bar"><div class="fill dim" style="width:77.2%"></div></div><strong>1.000×</strong></div>
+<div class="bar-row"><span>Core Established</span><div class="bar"><div class="fill dim" style="width:53.2%"></div></div><strong>0.690×</strong></div>
 <div class="bar-row"><span>Sparse / No-Rank</span><div class="bar"><div class="fill dim" style="width:1%"></div></div><strong>0.000×</strong></div>
 </div>
 <p class="small">Artifact source: <code>work/figures/w07_baseline_lift_by_cluster.png</code>. The chart is a visual rendering of the reported baseline-lift values.</p>
@@ -223,10 +223,10 @@ footer{border-top:1px solid var(--line);padding:35px 0 55px;color:var(--muted);f
 <h2>5. Ranked Recommendations &amp; Action Playbook</h2>
 <p>To operationalize cluster outputs for content reviewers, the <strong>61,267</strong> baseline CTR-fix candidates are mapped to their behavioral archetype and annotated with algorithmic confidence cautions.</p>
 <div class="recs">
-<div class="rec"><div class="rank">01</div><div><strong>Core Established Content</strong><br>Prioritize high-visibility candidates that exhibit low CTR relative to their position benchmark. Treat these as review candidates, not automatic fixes.</div></div>
-<div class="rec"><div class="rank">02</div><div><strong>Missing / Imputed Metadata</strong><br>Review instrumentation and metadata completeness before interpreting performance. Multiple cautions should lower confidence in direct editorial action.</div></div>
-<div class="rec"><div class="rank">03</div><div><strong>Low-Traffic / Emerging</strong><br>Use the archetype as a context layer rather than a trigger. Its lower baseline lift suggests the CTR-fix heuristic is less concentrated here.</div></div>
-<div class="rec"><div class="rank">04</div><div><strong>Sparse / No-Rank Risk</strong><br>Prioritize data-quality and indexing investigation over CTR optimization; absence of a baseline flag is not evidence of health.</div></div>
+<div class="rec"><div class="rank">01</div><div><strong>Missing / Imputed Metadata — 1.296× lift</strong><br>Review instrumentation and metadata completeness before interpreting performance. Its highest baseline lift makes this the first review priority, while multiple cautions should lower confidence in direct editorial action.</div></div>
+<div class="rec"><div class="rank">02</div><div><strong>Low-Traffic / Emerging — 1.275× lift</strong><br>Prioritize high-visibility candidates that exhibit low CTR relative to their position benchmark. Treat these as review candidates, not automatic fixes.</div></div>
+<div class="rec"><div class="rank">03</div><div><strong>Core Established Content — 0.690× lift</strong><br>Use the archetype as a context layer rather than a trigger. Its below-average baseline lift indicates the CTR-fix heuristic is less concentrated here.</div></div>
+<div class="rec"><div class="rank">04</div><div><strong>Sparse / No-Rank Risk — 0.000× lift</strong><br>Prioritize data-quality and indexing investigation over CTR optimization; absence of a baseline flag is not evidence of health.</div></div>
 </div>
 <h3>Confidence Tag Distribution · n = 61,267</h3>
 <div class="table-wrap"><table>
@@ -275,11 +275,11 @@ footer{border-top:1px solid var(--line);padding:35px 0 55px;color:var(--muted);f
 <section id="reproducibility">
 <h2>8. Reproducibility &amp; Environment Setup</h2>
 <p>All modeling pipelines, deterministic SQL queries, and artifact exports are version-controlled within the project repository.</p>
-<pre>git clone https://github.com/OjaswiGautam/FlyrankAI.git
-cd FlyrankAI
+<pre>git clone https://github.com/flyrank-bih/flyrank-ml-internship-starter.git
+cd flyrank-ml-internship-starter
 pip install -r requirements.txt
 jupyter nbconvert --to notebook --execute work/notebooks/capstone.ipynb</pre>
-<p><a href="https://github.com/OjaswiGautam/FlyrankAI" target="_blank" rel="noopener">Open the project repository ↗</a></p>
+<p><a href="https://github.com/flyrank-bih/flyrank-ml-internship-starter" target="_blank" rel="noopener">Open the project repository ↗</a></p>
 <p class="small">Primary artifact: <code>work/notebooks/capstone.ipynb</code>. Supporting figures are referenced by their repository paths in the paper.</p>
 </section>
 
