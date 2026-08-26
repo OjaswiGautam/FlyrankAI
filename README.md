@@ -1,147 +1,184 @@
-# FlyRank ML Internship — Starter Repo
+# Content Performance Archetypes — FlyRank ML Internship Capstone
 
-**Applied Search Intelligence: Google Search Ranking & Discoverability**
+An unsupervised K-Means clustering pipeline that discovers behavioral content archetypes
+from real search-performance data, audits an existing rule-based content-flagging system
+against those archetypes, and turns the result into a ranked, confidence-tagged action
+playbook for human review.
 
-This is the starting point for the FlyRank ML Internship. You **clone it into your own public
-repo** (one click — *Use this template*), build everything there, and submit that repo URL on
-each assignment in your portal — it's your workspace, your submission, and your portfolio all
-at once. The rhythm is simple: do the work, commit it, submit on the card. Done.
-
-Everything here runs on a small **anonymized** slice of real FlyRank search data. No credentials,
-no private client data, no setup headaches.
-
-> **New here?** Two reads: **[SETUP.md](SETUP.md)** (GitHub, Colab, and data access — ten
-> minutes, with every silent pitfall flagged), then **[GUIDE.md](GUIDE.md)** (every file
-> explained, what to edit vs. leave alone, and where your own work goes — five minutes).
+**Live paper:** https://ojaswigautam.github.io/FlyrankAI/
+**Author:** Ojaswi Gautam
 
 ---
 
-## Quickstart — first win in 2 minutes
+## What it does, and for whom
 
-The fastest path is Google Colab (one click, zero install). Open Notebook 1 and run all cells:
+This project answers one question: *what recurring performance archetypes exist across a
+large content inventory, based on observable search and engagement signals — and does an
+existing rule-based flagging system actually target those archetypes correctly?*
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/OjaswiGautam/FlyrankAI/blob/main/notebooks/01_first_look_and_discovery.ipynb?flush_cache=true)
- **Week 1 — Run it, then discover a real truth yourself**
+It's built for **content/SEO reviewers** who need a starting point for triaging a large
+inventory when reviewer time is limited — not a fully automated decision system. The output
+is a ranked review queue with reason codes and confidence tags, meant to sit in front of a
+human, not replace one.
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/OjaswiGautam/FlyrankAI/blob/main/notebooks/02_your_first_readable_model.ipynb?flush_cache=true)
- **Week 2 — The model is just a rule you can read**
+## Setup (reproducible by a stranger)
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/OjaswiGautam/FlyrankAI/blob/main/notebooks/03_working_with_the_full_release.ipynb?flush_cache=true)
- **Weeks 3+ — The full release (~79M rows) via DuckDB, no download needed** — hosted at
- [`FlyRank/internship-warehouse`](https://huggingface.co/datasets/FlyRank/internship-warehouse) (gated: request access + accept the data-use terms, approval is instant)
-
----
-
-## Your assignment notebooks — open, fill, save, done
-
-Every assignment is one pre-named skeleton notebook in `work/notebooks/`. Click its badge,
-fill the sections in order, then **File → Save a copy in GitHub → OK** — the dialog is
-already pre-filled with your repo and the right path.
-
-> **The badges know whose repo they're in.** About 30 seconds after you create your copy, an
-> automatic commit ("Point Colab badges at this copy") rewires every badge in it to open
-> **your** notebooks — with your saved work — instead of the shared read-only ones. Reading
-> this on the shared starter page? The badges below open blank previews; make your copy
-> first ([SETUP.md](SETUP.md), Moment 1).
-
-| Week | Card | Notebook | Open |
-|---|---|---|---|
-| 1 | ML-02 | `w01_research_question` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/OjaswiGautam/FlyrankAI/blob/main/work/notebooks/w01_research_question.ipynb?flush_cache=true) |
-| 2 | ML-03 | `w02_ml_task_framing` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/OjaswiGautam/FlyrankAI/blob/main/work/notebooks/w02_ml_task_framing.ipynb?flush_cache=true) |
-| 3 | ML-04 | `w03_data_contract` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/OjaswiGautam/FlyrankAI/blob/main/work/notebooks/w03_data_contract.ipynb?flush_cache=true) |
-| 3 | ML-05 | `w03_feature_leakage_check` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/OjaswiGautam/FlyrankAI/blob/main/work/notebooks/w03_feature_leakage_check.ipynb?flush_cache=true) |
-| 4 | ML-06 | `w04_signal_audit` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/OjaswiGautam/FlyrankAI/blob/main/work/notebooks/w04_signal_audit.ipynb?flush_cache=true) |
-| 4 | ML-07 | `w04_baseline_score` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/OjaswiGautam/FlyrankAI/blob/main/work/notebooks/w04_baseline_score.ipynb?flush_cache=true) |
-| 5 | ML-08 | `w05_model` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/OjaswiGautam/FlyrankAI/blob/main/work/notebooks/w05_model.ipynb?flush_cache=true) |
-| 6 | ML-09 | `w06_validation_audit` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/OjaswiGautam/FlyrankAI/blob/main/work/notebooks/w06_validation_audit.ipynb?flush_cache=true) |
-| 7 | ML-10 | `w07_action_playbook` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/OjaswiGautam/FlyrankAI/blob/main/work/notebooks/w07_action_playbook.ipynb?flush_cache=true) |
-| 8 | ML-11 | `capstone` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/OjaswiGautam/FlyrankAI/blob/main/work/notebooks/capstone.ipynb?flush_cache=true) |
-
-Badges not opening *your* copy? Colab's built-in opener always works: **File → Open notebook
-→ GitHub tab** → paste `github.com/you/your-repo` → pick the notebook.
-
-### Prefer local?
+**Requirements:** Python 3.10+, a Hugging Face account with access requested to
+[`FlyRank/internship-warehouse`](https://huggingface.co/datasets/FlyRank/internship-warehouse)
+(instant approval), and a Hugging Face **Read**-type access token.
 
 ```bash
-git clone <this-repo-url>
-cd flyrank-ml-internship-starter
-pip install -r requirements.txt          # or: uv pip install -r requirements.txt
-python scripts/run_all.py
+git clone https://github.com/OjaswiGautam/FlyrankAI.git
+cd FlyrankAI
+pip install -r requirements.txt
 ```
 
-That runs the whole pipeline on the bundled sample and writes results to `outputs/`.
+In Google Colab, store your Hugging Face token as a **Secret** named `HF_TOKEN`
+(the key icon in the left sidebar) — never paste it directly into a cell, since this repo
+is public.
 
----
+Run the full pipeline end to end:
 
-## What you get
-
-| Path | What it is |
-|---|---|
-| `notebooks/` | Week 1–2 **first-win notebooks** (Colab-ready). Start here. |
-| `scripts/01–05` + `run_all.py` | The runnable reference pipeline: prepare → baseline → train → evaluate → PDF. |
-| `data/raw/content_refresh_anonymized.csv` | The anonymized starter dataset (~30k pages). |
-| `outputs/` | Example outputs so you can see the **target shape** (`model_report.md`, `refresh_queue_sample.csv`, `charts/`). |
-| `work/` | **Your space.** Lane experiments and your capstone live here — see `work/README.md`. |
-| `docs/` | The core docs + the data dictionary (see below). |
-
-### Read these (in `docs/`)
-
-1. **`ml-core-foundation-framework.md`** — the first-principles map of ML as a whole system. The backbone of the live sessions.
-2. **`ml-intern-dataset-and-lane-guide.md`** — how to use the data safely, the capstone workflow, and the analysis "lanes" you can pick from.
-3. **`intern-free-tooling-guide.md`** — the zero-budget tool stack (Python, Colab, free AI assistants). You never need to pay for anything.
-4. **`data-dictionary.md`** — all 44 columns: meaning, scale, and gotchas. Keep it open while you work.
-
----
-
-## The pipeline (what `run_all.py` does)
-
-```text
-01_prepare_features.py   clean + build the feature vector, define the label
-02_baseline_score.py     a transparent hand-rule "fix this first" score
-03_train_model.py        logistic regression, decision tree, random forest (client-holdout split)
-04_evaluate_and_export.py  ranked queue + charts + Markdown report
-05_build_pdf_report.py   a shareable PDF summary
+```bash
+jupyter nbconvert --to notebook --execute work/notebooks/capstone.ipynb
 ```
 
-On the bundled sample, the learned model clearly beats the hand-written rule at picking the right
-pages to review first (**Precision@50 ≈ 0.24 → 0.74**; the model number can land 0.68–0.74
-depending on library versions — the ~3x lift is the point). The notebooks compute these numbers
-live, so they always reflect the current data and environment.
+This single notebook rebuilds the entire pipeline from the raw warehouse query through the
+final ranked recommendation queue — no external state required beyond the token.
 
-**Teaching point:** the model is the capstone, but the *workflow* is the lesson —
-`problem framing → data cleaning → baseline → first model → evaluation → explainable recommendation`.
+## Usage example
+
+```python
+# Inside capstone.ipynb — the core pipeline in miniature
+
+# 1. Pull and aggregate one month of real search-performance data
+raw = con.sql(f"""
+    SELECT client_hash_id, content_hash_id,
+           SUM(gsc_impressions) AS gsc_impressions, ...
+    FROM read_parquet('{TABLE}') WHERE gsc_data_available = TRUE
+    GROUP BY client_hash_id, content_hash_id
+""").df()
+
+# 2. Fit the model on a client-grouped split (never a naive random split — see Limitations)
+final_km = KMeans(n_clusters=4, random_state=42, n_init=30)
+final_km.fit(X_train)
+
+# 3. Overlay an existing baseline rule and measure where it concentrates
+lift_by_cluster = baseline_base.groupby('cluster')['baseline_flag'].mean() / global_rate
+```
+
+## Architecture
+
+Hugging Face warehouse (79M-row fact table + dimension table)
+│
+▼
+DuckDB query — aggregate to one row per (client, content), March 2026
+│
+▼
+Feature engineering — log-transform skewed counts, impute + flag missingness
+│
+▼
+Client-grouped split (GroupShuffleSplit) ──► Train (35 clients) / Val (12 clients)
+│
+▼
+K-Means (k swept 3–8, selected k=4 on validation silhouette + Davies-Bouldin)
+│
+▼
+Seed-stability check (5 seeds, ARI) ──► Overlay existing baseline rule as diagnostic
+│
+▼
+Ranked, reason-coded, confidence-tagged action queue ──► Deployed research paper
+
+
+## v2 evaluation results — what changed, and why it matters
+
+The first version of the seed-stability check (`n_init=10`) reported a misleadingly high
+mean ARI of 0.9957 across 5 seeds. Re-running it properly (checking each seed's actual
+pairwise agreement, not just the mean) revealed one seed had silently converged to a
+meaningfully worse solution — a real local-optimum failure, not noise:
+
+| | v1 (`n_init=10`) | v2 (`n_init=30`) |
+|---|---|---|
+| Mean ARI (5 seeds) | 0.7773 (misleading — one seed masked the rest) | **0.9981** |
+| Min ARI | 0.4454 | **0.9963** |
+| Cause | One seed's K-Means run stopped at a worse local optimum | Fixed by raising `n_init` from 10 to 30 |
+
+A second, separate correction was made during final paper verification: the baseline-flag
+lift-by-archetype figures in an earlier draft were computed against a stale intermediate
+dataframe and were wrong. The corrected, independently re-verified figures (final v2 model):
+
+| Archetype | v1 (incorrect draft) | v2 (verified, final) |
+|---|---|---|
+| Missing/Imputed Metadata | 1.110 | **1.296** |
+| Low-Traffic/Emerging | 0.811 | **1.275** |
+| Core Established Content | 1.196 | **0.690** |
+| Sparse/No-Rank Risk | 0.000 | 0.000 (unchanged) |
+
+Both corrections are disclosed in the deployed paper's Limitations section and in
+`capstone.ipynb`, rather than silently edited away.
+
+## Limitations
+
+- **Coverage is partial**: the model covers ~34% of the full content inventory — only
+  content with real March 2026 Google Search Console data.
+- **Single-month snapshot**: no trend, seasonality, or multi-month lifecycle claim is possible.
+- **Two of four archetypes are partly missingness-driven**, not purely behavioral — per-row
+  inspection found one cluster's "word count" values were entirely the population median
+  (an imputed placeholder), not real per-page data.
+- **No causal claims anywhere**: every finding is observed and directional within this
+  dataset. Cluster membership is decision-support for human review, never an automated
+  quality judgment or a guaranteed outcome.
+- **Client-population validation, not per-client validation**: the model generalizes to
+  unseen clients as a group; it does not guarantee accuracy for any single specific client.
+
+## Built with AI — what and how
+
+This project was built in collaboration with **Claude** (Anthropic), used throughout as a
+coding and review partner: drafting SQL/pandas pipelines, proposing validation designs,
+and reviewing my own written analysis against the project's methodology skills. Claude did
+**not** independently choose the lane, invent the findings, or decide what counted as
+"done" — every real number in this README and the linked paper was executed and verified
+by rerunning the actual code against the actual warehouse, not taken on faith from a draft.
+Two real bugs (the `n_init` seed-instability issue and the baseline-lift discrepancy above)
+were caught specifically *because* of that verification discipline, not despite using AI
+assistance — I treated Claude's output as a draft to check, not a finished answer.
+
+## Reproducibility & links
+
+- **Deployed paper:** https://ojaswigautam.github.io/FlyrankAI/
+- **Full notebook history:** `work/notebooks/` (w01 through capstone.ipynb)
+- **Metrics receipts:** `work/outputs/*.json`, `work/outputs/*.csv`
+- **Figures:** `work/figures/`
 
 ---
 
-## Data safety (read `DATA_USE.md`)
+## Full development history
 
-- Only the small **anonymized** CSV ships here — no client names, domains, URLs, titles, or keywords.
-- **Never** add raw private client data to this repo or your fork. Need more data? Request an approved
-  release from your mentor — never export it yourself.
-- Don't paste client data into third-party AI tools.
-- Frame every result as **observed / measured / directional / decision-support** — never
-  "I predicted Google's algorithm."
+This capstone was built over an 8-week track, one notebook per stage, each committed to
+`work/notebooks/`. Every weekly notebook is real, executed work — not a skeleton left
+unfilled — and each one is a checkpoint in how the final model and paper were arrived at.
 
-The `.gitignore` blocks datasets by default, and CI fails any commit that includes a dataset.
+| Week | Card | Notebook | What it covers |
+|---|---|---|---|
+| 1 | ML-02 | `w01_research_question.ipynb` | Lane selection, research question, cost of a wrong call |
+| 2 | ML-03 | `w02_ml_task_framing.ipynb` | Task type (unsupervised), success metric, unit of analysis |
+| 3 | ML-04 | `w03_data_contract.ipynb` | Warehouse grain/window verification, field classification, feature frame, leak trap |
+| 3 | ML-05 | `w03_feature_leakage_check.ipynb` | Full-depth feature vector build and leakage hunt |
+| 4 | ML-06 | `w04_signal_audit.ipynb` | Signal verification behind the baseline rule |
+| 4 | ML-07 | `w04_baseline_score.ipynb` | Hand-coded CTR-fix baseline, reason codes, top-20 review |
+| 5 | ML-08 | `w05_model.ipynb` | K-Means model, method choice, split design, model vs. baseline |
+| 6 | ML-09 | `w06_validation_audit.ipynb` | Paper-methodology audit, honest split before/after, leakage audit, claim rewrite |
+| 7 | ML-10 | `w07_action_playbook.ipynb` | Ranked actions, intended use, no-go list, monitoring triggers |
+| 8 | ML-11 | `capstone.ipynb` | Full pipeline assembly, corrected results, deployed paper source |
 
----
+### Data safety
 
-## Assignments & schedule
-
-Weekly assignments, live events, and the capstone live on **your portal board** (your
-enrollment email has your access link). This repo is the shared technical foundation they all
-build on — and the `skills/` folder here is the instruction library for your AI assistant
-(start at [skills/README.md](skills/README.md)).
-
-**First time with GitHub?** You need exactly four things (full walkthrough: [SETUP.md](SETUP.md)):
-1. A free account at github.com.
-2. Your own copy of this repo: **Use this template → Create a new repository** → public.
-   (One click — brings the notebooks, `work/`, and the CI leak-guard with it.)
-3. In Colab: *File → Save a copy in GitHub* — opened from your copy's badges, the dialog is
-   already pre-filled with your repo and path, so it's just OK (Colab handles auth).
-4. That's your submission repo — share its **github.com/you/your-repo** URL with Assignment 1
-   (never a colab.research.google.com or drive.google.com link).
+Only anonymized, hashed identifiers (`client_hash_id`, `content_hash_id`) and aggregate
+metrics appear anywhere in this repo or the deployed paper. No client names, domains, URLs,
+titles, or search query text are present at any stage. See `DATA_USE.md` for the full data
+handling policy this project followed.
 
 ---
 
-*Track leads: Mirza Ašćerić (ML) · Hole (data engineering). Code under MIT (see `LICENSE`); data under `DATA_USE.md`.*
+*Built as part of the FlyRank ML Engineering Internship. Code under MIT (see `LICENSE`);
+data under `DATA_USE.md`.*
