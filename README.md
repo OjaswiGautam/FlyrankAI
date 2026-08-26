@@ -69,6 +69,7 @@ lift_by_cluster = baseline_base.groupby('cluster')['baseline_flag'].mean() / glo
 
 ## Architecture
 
+```text
 Hugging Face warehouse (79M-row fact table + dimension table)
  │
  ▼
@@ -88,7 +89,7 @@ Seed-stability check (5 seeds, ARI) ──► Overlay existing baseline rule as 
  │
  ▼
 Ranked, reason-coded, confidence-tagged action queue ──► Deployed research paper
-
+```
 
 ## v2 evaluation results — what changed, and why it matters
 
