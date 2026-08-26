@@ -70,23 +70,23 @@ lift_by_cluster = baseline_base.groupby('cluster')['baseline_flag'].mean() / glo
 ## Architecture
 
 Hugging Face warehouse (79M-row fact table + dimension table)
-│
-▼
+ │
+ ▼
 DuckDB query — aggregate to one row per (client, content), March 2026
-│
-▼
+ │
+ ▼
 Feature engineering — log-transform skewed counts, impute + flag missingness
-│
-▼
+ │
+ ▼
 Client-grouped split (GroupShuffleSplit) ──► Train (35 clients) / Val (12 clients)
-│
-▼
+ │
+ ▼
 K-Means (k swept 3–8, selected k=4 on validation silhouette + Davies-Bouldin)
-│
-▼
+ │
+ ▼
 Seed-stability check (5 seeds, ARI) ──► Overlay existing baseline rule as diagnostic
-│
-▼
+ │
+ ▼
 Ranked, reason-coded, confidence-tagged action queue ──► Deployed research paper
 
 
